@@ -10,7 +10,7 @@ import { EmptyState, ErrorState, Skeleton, TopBar } from '../components/ui'
 export function TealHeader({ title, sub, illustration = '/img/doctor-think.png' }) {
   return (
     <div className="relative h-[176px] shrink-0 overflow-hidden bg-brand">
-      <img src={illustration} alt="" className="pointer-events-none absolute right-0 bottom-0 h-[150px] w-auto" />
+      <img src={illustration} alt="" className="pointer-events-none absolute right-0 bottom-0 h-[150px] w-auto [mask-image:linear-gradient(to_bottom,transparent,black_20%)]" />
       <div className="relative pt-5 pr-36 text-white [&_button]:text-white [&_button:hover]:bg-white/15">
         <TopBar title={title} className="[&_h1]:text-xl [&_h1]:whitespace-normal [&_h1]:text-white" />
         {sub && <p className="-mt-1 pl-[68px] text-xs text-white/85">{sub}</p>}
@@ -19,22 +19,22 @@ export function TealHeader({ title, sub, illustration = '/img/doctor-think.png' 
   )
 }
 
-/** Illustrated specialty tile used on the Specialists and Hospital screens. */
+/** Illustrated specialty tile used on the Specialists and Hospital screens. Every tile is the same circle. */
 export function SpecialtyTile({ s, to, onClick, active = false, count }) {
   const body = (
     <>
       <span
-        className={`grid aspect-square w-full place-items-center overflow-hidden rounded-full bg-white transition group-hover:-translate-y-0.5 group-active:scale-95 ${
+        className={`grid aspect-square w-full max-w-[84px] place-items-center rounded-full bg-brand-light p-1.5 transition group-hover:-translate-y-0.5 group-active:scale-95 ${
           active ? 'ring-[3px] ring-brand' : ''
         }`}
       >
         <img src={specialtyImage(s.slug)} alt="" className="h-full w-full object-contain" loading="lazy" />
       </span>
-      <span className="mt-1.5 text-[11px] leading-tight font-semibold text-brand">{s.name}</span>
+      <span className="mt-2 flex min-h-[28px] items-start text-[11px] leading-tight font-semibold text-brand">{s.name}</span>
       {count !== undefined && <span className="text-[10px] text-muted">{count} {count === 1 ? 'doctor' : 'doctors'}</span>}
     </>
   )
-  const cls = 'group flex flex-col items-center text-center'
+  const cls = 'group flex min-w-0 flex-col items-center text-center'
   return to ? (
     <Link to={to} className={cls}>{body}</Link>
   ) : (
@@ -47,9 +47,9 @@ export function Specialists() {
   return (
     <div className="flex flex-1 flex-col">
       <TealHeader title="Choose Your Specialist" />
-      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-8 shadow-[0_-10px_24px_rgba(255,255,255,0.7)]">
+      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-8">
         {cat.error && <ErrorState message={cat.error} onRetry={cat.reload} />}
-        <div className="grid grid-cols-4 gap-x-3 gap-y-5">
+        <div className="grid grid-cols-4 gap-x-2 gap-y-4">
           {cat.loading
             ? Array.from({ length: 12 }, (_, i) => <Skeleton key={i} className="aspect-square rounded-full" />)
             : cat.data.specialties.map((s) => (
@@ -80,7 +80,7 @@ export function SpecialistDoctors() {
   return (
     <div className="flex flex-1 flex-col">
       <TealHeader title="Choose Your Doctor" sub={spec?.name} illustration="/img/doctor-point.png" />
-      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-8 shadow-[0_-10px_24px_rgba(255,255,255,0.7)]">
+      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-8">
         <div className="no-scrollbar -mx-5 mb-4 flex gap-2 overflow-x-auto px-5">
           {[
             ['rating', 'Top rated'],
