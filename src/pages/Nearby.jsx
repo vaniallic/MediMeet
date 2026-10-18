@@ -18,7 +18,7 @@ export function PlaceCard({ place, active, onSelect, action }) {
   return (
     <div
       onClick={() => onSelect(place)}
-      className={`flex w-[180px] shrink-0 cursor-pointer snap-start flex-col overflow-hidden rounded-[20px] bg-[#8fa9a8] shadow-press transition ${
+      className={`flex h-full w-[180px] shrink-0 cursor-pointer snap-start flex-col overflow-hidden rounded-[20px] bg-[#8fa9a8] shadow-press transition ${
         active ? 'ring-[3px] ring-brand' : ''
       }`}
     >
@@ -35,7 +35,7 @@ export function PlaceCard({ place, active, onSelect, action }) {
       </div>
       <div className="-mt-3 flex flex-1 flex-col rounded-t-[16px] bg-[#8fa9a8] px-3 pt-2.5 pb-3 text-white">
         <div className="flex items-start justify-between gap-2">
-          <p className="line-clamp-2 font-display text-[15px] leading-tight font-semibold">{place.name}</p>
+          <p className="line-clamp-2 min-h-[2.5rem] font-display text-[15px] leading-tight font-semibold">{place.name}</p>
           <span className="shrink-0 text-xs">{formatDistance(place.distance)}</span>
         </div>
         <p className="mt-0.5 flex items-start gap-1 text-[11px] text-brand">
@@ -164,11 +164,11 @@ export default function Nearby() {
 
         {osm.error && <ErrorState message={`Couldn’t load OpenStreetMap results. ${osm.error}`} onRetry={osm.reload} />}
 
-        <div className="no-scrollbar mt-4 flex snap-x scroll-px-5 gap-3 overflow-x-auto px-5 pb-3">
+        <div className="no-scrollbar mt-4 flex snap-x scroll-px-5 items-stretch gap-3 overflow-x-auto px-5 pb-3">
           {(osm.loading || cat.loading) && places.length === 0
             ? [0, 1].map((i) => <Skeleton key={i} className="h-[230px] w-[180px] shrink-0" />)
             : places.slice(0, 30).map((p) => (
-                <div key={p.id} id={`place-${p.id}`}>
+                <div key={p.id} id={`place-${p.id}`} className="flex">
                   <PlaceCard place={p} active={p.id === activeId} onSelect={select} />
                 </div>
               ))}

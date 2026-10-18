@@ -335,14 +335,14 @@ export function ChangePickup() {
         </div>
 
         {nearby.error && <ErrorState message={`Couldn’t load OpenStreetMap results. ${nearby.error}`} onRetry={nearby.reload} />}
-        <div className="no-scrollbar mt-4 flex snap-x scroll-px-5 gap-3 overflow-x-auto px-5 pb-3">
-          <div id="pick-current">
+        <div className="no-scrollbar mt-4 flex snap-x scroll-px-5 items-stretch gap-3 overflow-x-auto px-5 pb-3">
+          <div id="pick-current" className="flex">
             <PlaceCard place={current} active={activeId === 'current'} onSelect={select} action={actionBtn('Current', null, true)} />
           </div>
           {nearby.loading && options.length === 0
             ? [0, 1].map((i) => <Skeleton key={i} className="h-[230px] w-[180px] shrink-0" />)
             : options.map((p) => (
-                <div key={p.id} id={`pick-${p.id}`}>
+                <div key={p.id} id={`pick-${p.id}`} className="flex">
                   <PlaceCard place={p} active={p.id === activeId} onSelect={select} action={actionBtn('Change Now', () => setConfirm(p))} />
                 </div>
               ))}
