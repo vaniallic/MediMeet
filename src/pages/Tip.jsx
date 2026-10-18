@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { tips } from '../data/catalog'
+import { illo } from '../components/icons'
 import { InfoNote, TopBar } from '../components/ui'
 
 export default function Tip() {
@@ -9,7 +10,7 @@ export default function Tip() {
   return (
     <div className="pb-10">
       <div style={{ background: tip.tint }} className="relative h-60 overflow-hidden">
-        <img src={tip.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={illo(tip.art)} alt="" className="absolute right-1/2 bottom-8 h-32 w-32 translate-x-1/2 object-contain" />
         <div className="relative [&_button]:bg-white/85">
           <TopBar />
         </div>
@@ -29,8 +30,8 @@ export default function Tip() {
         <div className="space-y-2">
           {others.map((t) => (
             <Link key={t.slug} to={`/tips/${t.slug}`} className="flex items-center gap-3 rounded-2xl p-2 transition hover:bg-mist-light">
-              <span className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-xl" style={{ background: t.tint }}>
-                <img src={t.image} alt="" className="h-14 w-14 rounded-xl object-cover" />
+              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl" style={{ background: t.tint }}>
+                <img src={illo(t.art)} alt="" className="h-9 w-9 object-contain" />
               </span>
               <span>
                 <span className="block text-[11px] font-bold text-mint uppercase">{t.category}</span>

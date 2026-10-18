@@ -82,20 +82,20 @@ export default function Home() {
 
       <section className="mt-6">
         <SectionHeader title="Services" />
-        <div className="grid grid-cols-4 gap-3 px-5">
+        <div className="grid grid-cols-4 justify-items-center gap-2 px-5">
           {SERVICES.map((s) => (
-            <Link key={s.label} to={s.to} className="group flex flex-col items-center gap-1.5">
-              <span className="grid aspect-square w-full place-items-center overflow-hidden rounded-2xl bg-brand shadow-press transition group-hover:-translate-y-0.5 group-active:scale-95">
-                <img src={illo(s.img)} alt="" className="h-[86%] w-[86%] object-contain drop-shadow" />
+            <Link key={s.label} to={s.to} className="group flex flex-col items-center gap-2">
+              <span className="grid h-[68px] w-[68px] place-items-center rounded-[20px] bg-brand shadow-press transition group-hover:-translate-y-0.5 group-active:scale-95">
+                <img src={illo(s.img)} alt="" className="h-11 w-11 object-contain" />
               </span>
               <span className="text-xs font-medium text-ink">{s.label}</span>
             </Link>
           ))}
-          <button onClick={() => setOtherOpen(true)} className="group flex flex-col items-center gap-1.5">
-            <span className="grid aspect-square w-full place-items-center rounded-2xl bg-brand shadow-press transition group-hover:-translate-y-0.5 group-active:scale-95">
-              <span className="grid grid-cols-2 gap-1.5">
+          <button onClick={() => setOtherOpen(true)} className="group flex flex-col items-center gap-2">
+            <span className="grid h-[68px] w-[68px] place-items-center rounded-[20px] bg-brand shadow-press transition group-hover:-translate-y-0.5 group-active:scale-95">
+              <span className="grid grid-cols-2 gap-1">
                 {[0, 1, 2, 3].map((i) => (
-                  <span key={i} className="h-5 w-5 rounded-md bg-mint" />
+                  <span key={i} className="h-3.5 w-3.5 rounded-[5px] bg-mint" />
                 ))}
               </span>
             </span>
@@ -106,14 +106,14 @@ export default function Home() {
 
       <a
         href="tel:112"
-        className="mx-5 mt-5 flex h-[76px] items-center gap-3 overflow-hidden rounded-2xl bg-coral-light pr-4 shadow-press transition hover:brightness-[1.02]"
+        className="mx-5 mt-6 flex min-h-[96px] items-center gap-4 rounded-3xl bg-coral-light px-4 py-3 shadow-press transition hover:brightness-[1.02]"
       >
-        <img src={illo('ambulance')} alt="" className="-ml-2 h-full w-auto shrink-0 scale-110 object-contain" />
+        <img src={illo('ambulance')} alt="" className="h-16 w-auto shrink-0 object-contain" />
         <span className="min-w-0 flex-1">
-          <span className="block font-display text-base leading-tight font-bold text-coral">Emergency Call</span>
-          <span className="block text-xs text-coral/80">Ambulance & ER, 24 hours</span>
+          <span className="block font-display text-lg leading-tight font-bold text-coral">Emergency Call</span>
+          <span className="mt-0.5 block text-xs text-coral/80">Ambulance &amp; ER, 24 hours</span>
         </span>
-        <span className="flex shrink-0 items-center gap-1.5 rounded-xl bg-coral px-3.5 py-1.5 font-display text-base font-bold text-white shadow-press">
+        <span className="flex shrink-0 items-center gap-1.5 rounded-2xl bg-coral px-4 py-2.5 font-display text-lg font-bold text-white shadow-press">
           <LuPhone className="h-4 w-4" /> 112
         </span>
       </a>
@@ -154,25 +154,19 @@ export default function Home() {
 
       <section className="mt-6">
         <SectionHeader title="Recommendations" />
-        <div className="no-scrollbar flex snap-x scroll-px-5 gap-3 overflow-x-auto px-5 pb-2">
-          {tips
-            .filter((t) => t.slug !== 'flu-season')
-            .map((t) => (
-              <Link
-                key={t.slug}
-                to={`/tips/${t.slug}`}
-                className="relative h-[164px] w-[132px] shrink-0 snap-start overflow-hidden rounded-2xl shadow-press transition hover:-translate-y-0.5"
-                style={{ background: t.tint }}
-              >
-                <img src={t.image} alt="" className={`absolute inset-0 h-full w-full object-cover ${t.labelInImage ? 'object-left-top' : 'object-center'}`} />
-                {!t.labelInImage && (
-                  <p className="absolute top-3 left-3 font-display text-lg leading-tight font-bold text-white drop-shadow">{t.category}</p>
-                )}
-                <p className="absolute inset-x-0 bottom-0 bg-[#7c9da3]/90 px-2.5 py-2.5 text-center text-xs leading-snug text-white">
-                  {t.caption}
-                </p>
-              </Link>
-            ))}
+        <div className="no-scrollbar flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pt-1 pb-4">
+          {tips.map((t) => (
+            <Link
+              key={t.slug}
+              to={`/tips/${t.slug}`}
+              className="flex h-[188px] w-[152px] shrink-0 snap-start flex-col rounded-3xl p-3.5 shadow-card transition hover:-translate-y-0.5 active:scale-[0.98]"
+              style={{ background: t.tint }}
+            >
+              <span className="self-start rounded-full bg-white/70 px-2.5 py-1 text-[11px] font-semibold text-brand">{t.category}</span>
+              <img src={illo(t.art)} alt="" className="mx-auto my-auto h-[72px] w-[72px] object-contain" />
+              <p className="line-clamp-2 text-[13px] leading-snug font-semibold text-ink">{t.caption}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
