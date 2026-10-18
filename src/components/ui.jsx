@@ -5,11 +5,13 @@ import { initials } from '../lib/format'
 
 export function Logo({ className = 'h-10', light = false }) {
   return (
-    <img
-      src="/img/logo.png"
-      alt="MediMeet"
-      className={`${className} w-auto shrink-0 self-start object-contain ${light ? 'brightness-0 invert' : ''}`}
-    />
+    <Link to="/home" aria-label="MediMeet home" className="inline-flex shrink-0 self-start">
+      <img
+        src="/img/logo.png"
+        alt="MediMeet"
+        className={`${className} w-auto object-contain ${light ? 'brightness-0 invert' : ''}`}
+      />
+    </Link>
   )
 }
 
