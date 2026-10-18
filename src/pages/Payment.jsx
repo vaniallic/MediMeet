@@ -248,35 +248,35 @@ export function PaymentSuccess() {
   const appt = useAsync(() => api.getAppointment(id), [id])
   const a = appt.data
   return (
-    <div className="flex flex-1 flex-col items-center px-6 pt-20 pb-10 text-center">
+    <div className="flex flex-1 flex-col items-center px-5 pt-16 pb-8 text-center">
       <div className="success-pop grid h-40 w-40 place-items-center rounded-full bg-brand-light">
         <div className="grid h-28 w-28 place-items-center rounded-full bg-brand text-white shadow-press">
           <LuCheck className="h-16 w-16" strokeWidth={3} />
         </div>
       </div>
-      <h1 className="mt-8 font-display text-xl font-bold text-ink">Payment Successful.</h1>
+      <h1 className="mt-7 font-display text-xl font-bold text-ink">Payment Successful.</h1>
       {a ? (
         <>
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-2 max-w-[320px] text-sm leading-relaxed text-muted">
             You’re booked with <b className="text-ink">{a.doctor.name}</b> on {formatDate(a.date, { weekday: 'long', day: 'numeric', month: 'long' })} at{' '}
             {a.time.replace(':', '.')}.
           </p>
-          <div className="mt-6 grid w-full grid-cols-2 gap-3">
-            <div className="card p-4">
+          <div className="mt-7 grid w-full grid-cols-2 gap-3">
+            <div className="card flex min-h-[120px] flex-col items-center justify-center gap-1.5 px-4 py-5">
               <p className="text-xs text-muted">Queue number</p>
-              <p className="font-display text-3xl font-bold text-brand">{a.queue_no ?? '–'}</p>
+              <p className="font-display text-4xl leading-none font-bold text-brand">{a.queue_no ?? '–'}</p>
             </div>
-            <div className="card p-4">
+            <div className="card flex min-h-[120px] flex-col items-center justify-center gap-1 px-4 py-5">
               <p className="text-xs text-muted">Paid via</p>
-              <p className="mt-1 font-display text-lg font-bold text-brand">{a.payment_method}</p>
+              <p className="font-display text-lg leading-tight font-bold text-brand">{a.payment_method}</p>
               <p className="text-xs text-muted">{rupiah(a.total)}</p>
             </div>
           </div>
         </>
       ) : (
-        <Skeleton className="mt-6 h-28 w-full" />
+        <Skeleton className="mt-7 h-[120px] w-full" />
       )}
-      <div className="mt-auto w-full space-y-3 pt-10">
+      <div className="mt-auto w-full space-y-3 pt-12">
         <Link to={`/appointments/${id}`} className="btn-primary">View appointment</Link>
         <Link to="/home" className="btn-secondary">Back to Home</Link>
       </div>
