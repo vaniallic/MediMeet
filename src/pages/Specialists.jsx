@@ -93,7 +93,7 @@ export function SpecialistDoctors() {
           ))}
         </div>
         {cat.error && <ErrorState message={cat.error} onRetry={cat.reload} />}
-        <div className="space-y-5 pl-1">
+        <div className="space-y-3">
           {cat.loading
             ? [0, 1, 2].map((i) => <Skeleton key={i} className="h-24" />)
             : doctors.map((d) => <DoctorCard key={d.id} doctor={d} />)}

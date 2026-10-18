@@ -94,7 +94,7 @@ export default function HospitalDetail() {
             <button onClick={() => setSpec('all')} className="text-xs font-semibold text-brand">Show all</button>
           )}
         </div>
-        <div className="space-y-5 rounded-3xl bg-mist-light px-3 py-5">
+        <div className="space-y-3 rounded-3xl bg-mist-light p-3">
           {shown.map((d) => (
             <DoctorCard key={d.id} doctor={d} showHospital={false} />
           ))}

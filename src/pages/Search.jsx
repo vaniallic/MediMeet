@@ -160,11 +160,13 @@ export default function Search() {
               <h2 className="mb-2 text-xs font-bold tracking-wider text-muted uppercase">Specialists</h2>
               <div className="space-y-2">
                 {results.specialties.map((s) => (
-                  <Link key={s.slug} to={`/specialists/${s.slug}`} className="card flex items-center gap-3 p-3">
-                    <img src={specialtyImage(s.slug)} alt="" className="h-12 w-12 rounded-full object-contain" />
-                    <span className="flex-1">
-                      <span className="block font-semibold">{s.name}</span>
-                      <span className="block text-xs text-muted">{s.blurb}</span>
+                  <Link key={s.slug} to={`/specialists/${s.slug}`} className="row-card">
+                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-light p-1">
+                      <img src={specialtyImage(s.slug)} alt="" className="h-full w-full object-contain" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-display text-[15px] font-bold text-ink">{s.name}</span>
+                      <span className="line-clamp-2 block text-xs text-muted">{s.blurb}</span>
                     </span>
                     <LuChevronRight className="text-brand" />
                   </Link>
@@ -175,7 +177,7 @@ export default function Search() {
           {results.doctors.length > 0 && (
             <section className="px-5">
               <h2 className="mb-2 text-xs font-bold tracking-wider text-muted uppercase">Doctors</h2>
-              <div className="space-y-5 pl-1">
+              <div className="space-y-3">
                 {results.doctors.map((d) => (
                   <DoctorCard key={d.id} doctor={d} />
                 ))}
@@ -187,12 +189,14 @@ export default function Search() {
               <h2 className="mb-2 text-xs font-bold tracking-wider text-muted uppercase">Partner hospitals</h2>
               <div className="space-y-2">
                 {results.hospitals.map((h) => (
-                  <button key={h.id} onClick={() => navigate(`/hospitals/${h.id}`)} className="card flex w-full items-center gap-3 p-3 text-left">
-                    <img src="/img/icon-hospital.png" alt="" className="h-11 w-11 object-contain" />
+                  <button key={h.id} onClick={() => navigate(`/hospitals/${h.id}`)} className="row-card w-full text-left">
+                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-light">
+                      <img src="/img/icon-hospital.png" alt="" className="h-9 w-9 object-contain" />
+                    </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-semibold">{h.name}</span>
-                      <span className="flex items-center gap-1 truncate text-xs text-muted">
-                        <LuMapPin className="shrink-0" /> {h.address}
+                      <span className="block font-display text-[15px] font-bold text-ink">{h.name}</span>
+                      <span className="flex items-center gap-1 text-xs text-muted">
+                        <LuMapPin className="shrink-0 text-brand" /> <span className="truncate">{h.address}</span>
                       </span>
                     </span>
                     <LuChevronRight className="text-brand" />

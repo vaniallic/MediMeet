@@ -4,36 +4,32 @@ import { Avatar, RatingPill } from './ui'
 import { fromISODate, rupiah } from '../lib/format'
 
 /**
- * Doctor row from the Figma "Choose Your Doctor" screen: a round photo with a thick teal
- * ring that overlaps a white card holding hospital, name, specialty, rating and fee.
+ * Doctor row. Same frame as the doctor block on the Pharmacy prescription card:
+ * thin teal outline, round photo with a teal ring, name and rating on top, specialty and fee below.
+ * flat = no drop shadow, for when it sits inside another card.
  */
-export function DoctorCard({ doctor, showHospital = true, to, as = 'link', className = '' }) {
+export function DoctorCard({ doctor, showHospital = true, to, as = 'link', flat = false, className = '' }) {
   const body = (
     <>
-      <Avatar
-        name={doctor.name}
-        photo={doctor.photo}
-        size="h-[72px] w-[72px] text-xl"
-        className="absolute top-1/2 left-0 z-10 -translate-y-1/2"
-      />
-      <div className="ml-[30px] rounded-2xl bg-white py-2.5 pr-3.5 pl-[54px] shadow-press">
+      <Avatar name={doctor.name} photo={doctor.photo} size="h-14 w-14 text-lg" />
+      <div className="min-w-0 flex-1">
         {showHospital && doctor.hospital && (
-          <p className="flex items-center gap-1 truncate text-xs text-ink">
-            <LuMapPin className="shrink-0 text-brand" /> {doctor.hospital.name}
+          <p className="mb-0.5 flex items-center gap-1 text-[11px] text-muted">
+            <LuMapPin className="shrink-0 text-brand" /> <span className="truncate">{doctor.hospital.name}</span>
           </p>
         )}
         <div className="flex items-start justify-between gap-2">
-          <p className="min-w-0 font-display text-[15px] leading-tight font-bold tracking-tight text-black">{doctor.name}</p>
+          <p className="min-w-0 font-display text-[15px] leading-tight font-bold text-ink">{doctor.name}</p>
           <RatingPill value={doctor.rating} className="shrink-0" />
         </div>
-        <div className="mt-0.5 flex items-end justify-between gap-2">
-          <p className="text-[13px] leading-snug text-ink">{doctor.specialtyName}</p>
-          <p className="shrink-0 text-[13px] text-brand">{rupiah(doctor.fee)}</p>
+        <div className="mt-1 flex items-end justify-between gap-2">
+          <p className="min-w-0 text-xs text-muted">{doctor.specialtyName}</p>
+          <p className="shrink-0 text-xs font-semibold text-brand">{rupiah(doctor.fee)}</p>
         </div>
       </div>
     </>
   )
-  const cls = `relative block transition hover:-translate-y-0.5 active:scale-[0.99] ${className}`
+  const cls = `row-card transition hover:-translate-y-0.5 active:scale-[0.99] ${flat ? 'shadow-none' : ''} ${className}`
   if (as === 'div') return <div className={cls}>{body}</div>
   return (
     <Link to={to ?? `/doctors/${doctor.id}`} className={cls}>
