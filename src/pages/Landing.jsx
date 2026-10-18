@@ -18,9 +18,19 @@ export default function Landing() {
       <p className="mt-4 max-w-[280px] font-mont text-[15px] leading-relaxed font-light tracking-wide text-ink">
         Your health, simplified — anytime, anywhere.
       </p>
-      <Link to="/login" className="btn-primary mt-8 h-12">
+      <Link to="/home" className="btn-primary mt-8 h-12">
         Get Started
       </Link>
+      <p className="mt-4 text-center text-sm text-muted">
+        Already have an account?{' '}
+        <Link to="/login" className="font-semibold text-brand hover:underline">
+          Log in
+        </Link>
+        {' · '}
+        <Link to="/signup" className="font-semibold text-brand hover:underline">
+          Sign up
+        </Link>
+      </p>
       <Link to="/emergency" className="mt-4 text-center text-sm font-medium text-coral hover:underline">
         Emergency? Call 112
       </Link>

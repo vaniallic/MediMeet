@@ -5,6 +5,7 @@ import { LuChevronLeft, LuChevronRight, LuHistory, LuMapPin, LuStar, LuUsers } f
 import { api, friendlyError } from '../lib/api'
 import { addDays, compact, fromISODate, isSlotPast, rupiah, todayISO } from '../lib/format'
 import { useAsync } from '../hooks/useAsync'
+import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { Avatar, ErrorState, RatingPill, Skeleton, Spinner, TopBar } from '../components/ui'
 
@@ -14,6 +15,7 @@ export default function DoctorDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const toast = useToast()
+  const { user } = useAuth()
   const cat = useAsync(() => api.getCatalog(), [])
   const doctor = cat.data?.doctorById[id]
 
@@ -35,6 +37,10 @@ export default function DoctorDetail() {
   useEffect(() => setTime(null), [date])
 
   const book = async () => {
+    if (!user) {
+      navigate('/login', { state: { from: `/doctors/${id}`, reason: 'book' } })
+      return
+    }
     setBusy(true)
     try {
       const appt = await api.createAppointment({ doctorId: id, date, time })
@@ -188,7 +194,7 @@ export default function DoctorDetail() {
 
         <div className="mt-auto pt-6">
           <button className="btn-primary h-12" disabled={!date || !time || busy} onClick={book}>
-            {busy ? <Spinner /> : time ? `Book Session · ${time.replace(':', '.')}` : 'Book Session'}
+            {busy ? <Spinner /> : !user ? 'Log in to Book' : time ? `Book Session · ${time.replace(':', '.')}` : 'Book Session'}
           </button>
         </div>
       </section>

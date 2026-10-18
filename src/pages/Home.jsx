@@ -45,12 +45,12 @@ export function SearchBar({ onClick, placeholder = 'Find what you need' }) {
 }
 
 export default function Home() {
-  const { profile } = useAuth()
+  const { user, profile } = useAuth()
   const navigate = useNavigate()
   const [otherOpen, setOtherOpen] = useState(false)
-  const appts = useAsync(() => api.listAppointments(), [])
+  const appts = useAsync(() => (user ? api.listAppointments() : Promise.resolve([])), [user?.id])
   const news = useAsync(() => getHealthNews(), [])
-  const notes = useAsync(() => loadNotifications(), [])
+  const notes = useAsync(() => (user ? loadNotifications() : Promise.resolve([])), [user?.id])
   const unread = useMemo(() => {
     const seen = readSeen()
     return (notes.data ?? []).filter((n) => !seen.has(n.id)).length
@@ -66,15 +66,21 @@ export default function Home() {
       <header className="flex items-center justify-between gap-3 px-5 pt-page-top pb-4">
         <Logo />
         <div className="flex min-w-0 items-center gap-2">
-          <p className="truncate font-display text-xl font-bold text-brand">Hi, {profile ? firstName(profile.full_name) : '…'}!</p>
-          <Link to="/notifications" aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`} className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full text-brand hover:bg-brand-light">
+          {user ? (
+            <p className="truncate font-display text-xl font-bold text-brand">Hi, {profile ? firstName(profile.full_name) : '…'}!</p>
+          ) : (
+            <Link to="/login" className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white shadow-press">
+              Log in
+            </Link>
+          )}
+          {user && <Link to="/notifications" aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`} className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full text-brand hover:bg-brand-light">
             <TbBell className="h-6 w-6" />
             {unread > 0 && (
               <span className="absolute top-1 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-coral px-1 text-[10px] font-bold text-white">
                 {unread > 9 ? '9+' : unread}
               </span>
             )}
-          </Link>
+          </Link>}
         </div>
       </header>
 

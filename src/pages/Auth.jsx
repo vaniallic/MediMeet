@@ -120,6 +120,7 @@ export function Login() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const done = useAfterAuth()
+  const location = useLocation()
 
   const signIn = async (e, creds = { email, password }) => {
     e?.preventDefault()
@@ -137,6 +138,9 @@ export function Login() {
 
   return (
     <AuthLayout greeting="Hello!" sub="Welcome to MediMeet" title="Login">
+      {location.state?.reason === 'book' && (
+        <p className="mt-4 rounded-2xl bg-brand-light px-4 py-3 text-sm text-brand">Log in or sign up to book your session. Your doctor and time are waiting.</p>
+      )}
       <form onSubmit={signIn} className="mt-7 space-y-5">
         <Field icon={LuMail} label="Email" type="email" value={email} onChange={setEmail} autoComplete="email" />
         <Field icon={LuLock} label="Password" type="password" value={password} onChange={setPassword} autoComplete="current-password" />
@@ -165,7 +169,7 @@ export function Login() {
 
       <p className="mt-auto pt-8 text-center text-sm text-muted">
         Don’t have an account?{' '}
-        <Link to="/signup" className="font-semibold text-brand hover:underline">
+        <Link to="/signup" state={location.state} className="font-semibold text-brand hover:underline">
           Sign Up
         </Link>
       </p>

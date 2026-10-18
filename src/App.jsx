@@ -44,6 +44,7 @@ function GuestOnly({ children }) {
   return children
 }
 
+// Browsing is open to guests. Login is only needed to book and for personal areas.
 const guard = (el) => <RequireAuth>{el}</RequireAuth>
 
 export default function App() {
@@ -58,13 +59,13 @@ export default function App() {
         <Route path="emergency" element={<Emergency />} />
         <Route path="privacy" element={<PrivacyPage />} />
 
-        <Route path="home" element={guard(<Home />)} />
-        <Route path="search" element={guard(<Search />)} />
-        <Route path="nearby" element={guard(<Nearby />)} />
-        <Route path="hospitals/:id" element={guard(<HospitalDetail />)} />
-        <Route path="specialists" element={guard(<Specialists />)} />
-        <Route path="specialists/:slug" element={guard(<SpecialistDoctors />)} />
-        <Route path="doctors/:id" element={guard(<DoctorDetail />)} />
+        <Route path="home" element={<Home />} />
+        <Route path="search" element={<Search />} />
+        <Route path="nearby" element={<Nearby />} />
+        <Route path="hospitals/:id" element={<HospitalDetail />} />
+        <Route path="specialists" element={<Specialists />} />
+        <Route path="specialists/:slug" element={<SpecialistDoctors />} />
+        <Route path="doctors/:id" element={<DoctorDetail />} />
         <Route path="checkout/:id" element={guard(<Checkout />)} />
         <Route path="pay/:id" element={guard(<PayScreen />)} />
         <Route path="success/:id" element={guard(<PaymentSuccess />)} />
@@ -77,8 +78,8 @@ export default function App() {
         <Route path="profile" element={guard(<Profile />)} />
         <Route path="profile/edit" element={guard(<EditProfile />)} />
         <Route path="settings/:section" element={guard(<Settings />)} />
-        <Route path="tips/:slug" element={guard(<Tip />)} />
-        <Route path="news" element={guard(<News />)} />
+        <Route path="tips/:slug" element={<Tip />} />
+        <Route path="news" element={<News />} />
         <Route path="notifications" element={guard(<Notifications />)} />
         <Route path="*" element={<NotFound />} />
       </Route>
