@@ -20,7 +20,7 @@ export function BottomNav() {
     <div className="pointer-events-none sticky bottom-0 z-[500] mt-auto shrink-0 px-5 pt-3 pb-[max(env(safe-area-inset-bottom),1.25rem)]">
       <nav
         aria-label="Main"
-        className="pointer-events-auto mx-auto flex h-[68px] max-w-[320px] items-center justify-between rounded-full bg-white px-3 shadow-[0_10px_28px_rgba(4,103,125,0.20)] ring-1 ring-mist"
+        className="pointer-events-auto mx-auto flex h-[68px] w-full items-center justify-around rounded-full bg-white px-4 shadow-[0_10px_28px_rgba(4,103,125,0.20)] ring-1 ring-mist"
       >
         {TABS.map(({ to, label, icon: Icon }) => (
           <NavLink
