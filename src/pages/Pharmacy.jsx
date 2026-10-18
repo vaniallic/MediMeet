@@ -184,7 +184,7 @@ export function Pharmacy() {
             ))}
           </div>
         ) : (
-          <EmptyState image="/img/icon-firstaid.png" title={q ? 'No matches' : 'No active prescriptions'} text={q ? 'Try another medicine name.' : 'After a visit, your doctor’s prescription appears here.'} />
+          <EmptyState image="/img/icon-firstaid.png" title={q ? 'No matches' : 'No active prescriptions'} text={q ? 'Try another medicine name.' : 'After a visit, your doctor’s prescription appears here.'} action={q ? null : <Link to="/specialists" className="btn-primary h-11">Find a Doctor</Link>} />
         )}
       </section>
 

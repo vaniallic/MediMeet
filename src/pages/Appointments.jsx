@@ -111,9 +111,14 @@ export function Appointments({ mode = 'upcoming' }) {
             image="/img/icon-calendar.png"
             title={history ? 'No past visits' : 'Nothing booked yet'}
             text={history ? 'Finished visits will show up here.' : 'Find a doctor and pick a time that suits you.'}
+            action={
+              <Link to="/specialists" className="btn-primary h-11">
+                Find a Doctor
+              </Link>
+            }
           />
         )}
-        <Link
+        {(appts.loading || list.length > 0) && <Link
           to="/specialists"
           className="ml-3 flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-[22px] bg-white text-[15px] text-muted/80 shadow-[0_4px_8px_rgba(0,0,0,0.18)] transition hover:text-brand"
         >
@@ -121,7 +126,7 @@ export function Appointments({ mode = 'upcoming' }) {
           <span className="grid h-6 w-6 place-items-center rounded-full border-2 border-current">
             <LuPlus className="h-4 w-4" />
           </span>
-        </Link>
+        </Link>}
       </div>
     </div>
   )
