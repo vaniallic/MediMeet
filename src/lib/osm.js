@@ -94,4 +94,29 @@ export async function reverseGeocode({ lat, lng }) {
   return out
 }
 
+/**
+ * Look up an area, street or landmark in Indonesia by name (Nominatim). Called only when the user
+ * submits the search box, never per keystroke, to respect the Nominatim usage policy.
+ */
+export async function searchPlaces(query, signal) {
+  const q = query.trim()
+  if (q.length < 3) return []
+  const key = `osm:search:${q.toLowerCase()}`
+  const cached = cacheGet(key)
+  if (cached) return cached
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=id&accept-language=en&q=${encodeURIComponent(q)}`,
+    { signal },
+  )
+  if (!res.ok) throw new Error('Search is not available right now')
+  const out = (await res.json()).map((r) => ({
+    id: String(r.place_id),
+    label: r.display_name.split(',').slice(0, 3).join(',').trim(),
+    lat: Number(r.lat),
+    lng: Number(r.lon),
+  }))
+  cacheSet(key, out)
+  return out
+}
+
 export const directionsUrl = ({ lat, lng }) => `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`

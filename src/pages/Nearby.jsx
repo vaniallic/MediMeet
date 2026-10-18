@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { LuChevronLeft, LuLocateFixed, LuMapPin, LuPhone, LuSlidersHorizontal } from 'react-icons/lu'
+import { LuChevronLeft, LuLoaderCircle, LuLocateFixed, LuMapPin, LuPhone, LuSearch, LuX } from 'react-icons/lu'
 import { TbMapPinFilled } from 'react-icons/tb'
 import { api } from '../lib/api'
-import { directionsUrl, findNearby } from '../lib/osm'
+import { directionsUrl, findNearby, searchPlaces } from '../lib/osm'
 import { distanceKm, formatDistance } from '../lib/format'
 import { useAsync } from '../hooks/useAsync'
 import { useGeo } from '../context/GeoContext'
@@ -75,20 +75,33 @@ export default function Nearby() {
   const type = params.get('type') === 'pharmacy' ? 'pharmacy' : 'hospital'
   const [radius, setRadius] = useState(5000)
   const [activeId, setActiveId] = useState(null)
+  const [query, setQuery] = useState('')
+  const [areas, setAreas] = useState(null) // null = nothing searched yet
+  const [searching, setSearching] = useState(false)
+  const [searchError, setSearchError] = useState('')
+  const [focus, setFocus] = useState(null) // { lat, lng, label } chosen from search, overrides GPS
   const geo = useGeo({ autoLocate: true })
+  const origin = focus ?? geo.coords
   const cat = useAsync(() => api.getCatalog(), [])
-  const osm = useAsync(() => findNearby(type, geo.coords, radius), [type, geo.coords.lat, geo.coords.lng, radius])
+  const osm = useAsync(() => findNearby(type, origin, radius), [type, origin.lat, origin.lng, radius])
 
   const places = useMemo(() => {
     const partners =
       type === 'hospital'
-        ? (cat.data?.hospitals ?? []).map((h) => ({ ...h, kind: 'partner', distance: distanceKm(geo.coords, h) }))
+        ? (cat.data?.hospitals ?? []).map((h) => ({ ...h, kind: 'partner', distance: distanceKm(origin, h) }))
         : []
     const real = (osm.data ?? []).map((p) => ({ ...p, kind: type }))
     return [...partners.filter((p) => p.distance <= radius / 1000 + 15), ...real].sort((a, b) => a.distance - b.distance)
-  }, [cat.data, osm.data, geo.coords, type, radius])
+  }, [cat.data, osm.data, origin.lat, origin.lng, type, radius])
 
-  const active = places.find((p) => p.id === activeId)
+  // Typing filters the places already loaded by name or address.
+  const term = query.trim().toLowerCase()
+  const shown = useMemo(
+    () => (term ? places.filter((p) => `${p.name} ${p.address ?? ''}`.toLowerCase().includes(term)) : places),
+    [places, term],
+  )
+
+  const active = shown.find((p) => p.id === activeId)
   useEffect(() => setActiveId(null), [type])
 
   const select = (p) => {
@@ -96,29 +109,106 @@ export default function Nearby() {
     document.getElementById(`place-${p.id}`)?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
   }
 
+  const submitSearch = async (e) => {
+    e.preventDefault()
+    if (term.length < 3) {
+      setSearchError('Type at least 3 letters to search an area.')
+      setAreas(null)
+      return
+    }
+    setSearching(true)
+    setSearchError('')
+    try {
+      setAreas(await searchPlaces(query))
+    } catch (err) {
+      setAreas(null)
+      setSearchError(err.message || 'Search failed. Try again.')
+    } finally {
+      setSearching(false)
+    }
+  }
+
+  const pickArea = (a) => {
+    setFocus({ lat: a.lat, lng: a.lng, label: a.label })
+    setAreas(null)
+    setQuery('')
+    setActiveId(null)
+  }
+
+  const clearSearch = () => {
+    setQuery('')
+    setAreas(null)
+    setSearchError('')
+  }
+
+  const backToMe = () => {
+    setFocus(null)
+    clearSearch()
+    geo.locate()
+  }
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="relative">
         <MapView
-          center={active ?? geo.coords}
+          center={active ?? origin}
           you={geo.status === 'granted' ? geo.coords : null}
-          places={places.slice(0, 40)}
+          places={shown.slice(0, 40)}
           activeId={activeId}
           onSelect={select}
           zoom={radius > 5000 ? 12 : 14}
           className="h-[46vh] min-h-[300px] md:h-[340px]"
         />
-        <div className="absolute inset-x-0 top-0 z-[400] flex items-center gap-2 px-4 pt-5">
-          <button onClick={() => window.history.back()} aria-label="Go back" className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-brand">
-            <LuChevronLeft className="h-7 w-7" />
-          </button>
-          <div className="flex h-11 flex-1 items-center justify-between rounded-full border-2 border-brand bg-white px-5 shadow-soft">
-            <span className="text-[15px] text-ink">{type === 'pharmacy' ? 'Nearest Pharmacy' : 'Nearest Hospital'}</span>
-            <LuSlidersHorizontal className="h-5 w-5 text-ink" />
+        <div className="absolute inset-x-0 top-0 z-[400] px-4 pt-5">
+          <div className="flex items-center gap-2">
+            <button onClick={() => window.history.back()} aria-label="Go back" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/90 text-brand shadow-soft">
+              <LuChevronLeft className="h-7 w-7" />
+            </button>
+            <form onSubmit={submitSearch} role="search" className="flex h-11 min-w-0 flex-1 items-center gap-2 rounded-full border-2 border-brand bg-white pr-1.5 pl-4 shadow-soft">
+              <input
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value)
+                  setSearchError('')
+                }}
+                placeholder={type === 'pharmacy' ? 'Search pharmacy or area' : 'Search hospital or area'}
+                aria-label="Search places or an area"
+                enterKeyHint="search"
+                className="h-full min-w-0 flex-1 bg-transparent text-[15px] text-ink outline-none placeholder:text-muted/70"
+              />
+              {query && (
+                <button type="button" onClick={clearSearch} aria-label="Clear search" className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted hover:bg-mist-light">
+                  <LuX className="h-4 w-4" />
+                </button>
+              )}
+              <button type="submit" aria-label="Search" className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand text-white">
+                {searching ? <LuLoaderCircle className="h-4 w-4 animate-spin" /> : <LuSearch className="h-4 w-4" />}
+              </button>
+            </form>
           </div>
+          {(areas || searchError) && (
+            <div className="mt-2 ml-12 max-h-[220px] overflow-y-auto rounded-2xl bg-white shadow-card">
+              {searchError && <p className="px-4 py-3 text-xs text-coral">{searchError}</p>}
+              {areas && areas.length === 0 && <p className="px-4 py-3 text-xs text-muted">No area found for “{query.trim()}”.</p>}
+              {areas && areas.length > 0 && (
+                <>
+                  <p className="px-4 pt-3 pb-1 text-[11px] font-bold tracking-wider text-muted uppercase">Move the map to</p>
+                  <ul>
+                    {areas.map((a) => (
+                      <li key={a.id}>
+                        <button onClick={() => pickArea(a)} className="flex w-full items-start gap-2 px-4 py-2.5 text-left text-sm text-ink hover:bg-mist-light">
+                          <LuMapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" /> <span>{a.label}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          )}
         </div>
         <button
-          onClick={geo.locate}
+          onClick={backToMe}
           className="absolute right-3 bottom-8 z-[400] grid h-11 w-11 place-items-center rounded-full bg-white text-brand shadow-soft"
           aria-label="Use my location"
         >
@@ -131,7 +221,7 @@ export default function Nearby() {
           <div className="min-w-0">
             <h1 className="font-display text-lg font-bold text-brand">{type === 'pharmacy' ? 'Nearest Pharmacy' : 'Nearest Hospital'}</h1>
             <p className="mt-1 flex items-center gap-1.5 truncate text-sm text-ink">
-              <LuMapPin className="h-4 w-4 shrink-0 text-brand" /> {geo.label}
+              <LuMapPin className="h-4 w-4 shrink-0 text-brand" /> {focus?.label ?? geo.label}
             </p>
           </div>
           <label className="flex shrink-0 items-center font-display text-lg font-bold text-brand">
@@ -150,7 +240,12 @@ export default function Nearby() {
             </select>
           </label>
         </div>
-        {geo.status === 'fallback' && (
+        {focus && (
+          <button onClick={backToMe} className="mx-5 mt-2 self-start text-xs font-semibold text-brand underline">
+            Back to my location
+          </button>
+        )}
+        {!focus && geo.status === 'fallback' && (
           <p className="mx-5 mt-2 text-xs text-muted">Location is off, so we’re showing Central Jakarta. Tap the target button to try again.</p>
         )}
 
@@ -165,16 +260,20 @@ export default function Nearby() {
         {osm.error && <ErrorState message={`Couldn’t load OpenStreetMap results. ${osm.error}`} onRetry={osm.reload} />}
 
         <div className="no-scrollbar mt-4 flex snap-x scroll-px-5 items-stretch gap-3 overflow-x-auto px-5 pb-3">
-          {(osm.loading || cat.loading) && places.length === 0
+          {(osm.loading || cat.loading) && shown.length === 0
             ? [0, 1].map((i) => <Skeleton key={i} className="h-[230px] w-[180px] shrink-0" />)
-            : places.slice(0, 30).map((p) => (
+            : shown.slice(0, 30).map((p) => (
                 <div key={p.id} id={`place-${p.id}`} className="flex">
                   <PlaceCard place={p} active={p.id === activeId} onSelect={select} />
                 </div>
               ))}
         </div>
-        {!osm.loading && !osm.error && places.length === 0 && (
-          <p className="px-5 text-sm text-muted">Nothing found within {radius / 1000} km. Try a bigger radius.</p>
+        {!osm.loading && !osm.error && shown.length === 0 && (
+          <p className="px-5 text-sm text-muted">
+            {term
+              ? `No place named “${query.trim()}” within ${radius / 1000} km. Press the search button to look for that area instead.`
+              : `Nothing found within ${radius / 1000} km. Try a bigger radius.`}
+          </p>
         )}
 
         <p className="mt-auto px-5 pt-4 text-[11px] leading-relaxed text-muted">
