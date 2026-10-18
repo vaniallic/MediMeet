@@ -262,11 +262,11 @@ export function PaymentSuccess() {
             {a.time.replace(':', '.')}.
           </p>
           <div className="mt-7 grid w-full grid-cols-2 gap-3">
-            <div className="card flex min-h-[120px] flex-col items-center justify-center gap-1.5 px-4 py-5">
+            <div className="card flex min-h-[132px] flex-col items-center justify-center gap-4 px-4 py-6">
               <p className="text-xs text-muted">Queue number</p>
               <p className="font-display text-4xl leading-none font-bold text-brand">{a.queue_no ?? '–'}</p>
             </div>
-            <div className="card flex min-h-[120px] flex-col items-center justify-center gap-1 px-4 py-5">
+            <div className="card flex min-h-[132px] flex-col items-center justify-center gap-2.5 px-4 py-6">
               <p className="text-xs text-muted">Paid via</p>
               <p className="font-display text-lg leading-tight font-bold text-brand">{a.payment_method}</p>
               <p className="text-xs text-muted">{rupiah(a.total)}</p>
@@ -274,7 +274,7 @@ export function PaymentSuccess() {
           </div>
         </>
       ) : (
-        <Skeleton className="mt-7 h-[120px] w-full" />
+        <Skeleton className="mt-7 h-[132px] w-full" />
       )}
       <div className="mt-auto w-full space-y-3 pt-12">
         <Link to={`/appointments/${id}`} className="btn-primary">View appointment</Link>
