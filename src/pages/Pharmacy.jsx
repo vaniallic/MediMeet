@@ -287,7 +287,7 @@ export function ChangePickup() {
         e.stopPropagation()
         onClick?.()
       }}
-      className="flex-1 rounded-full bg-mist py-1.5 text-center text-xs font-semibold text-brand shadow-press disabled:opacity-80"
+      className="flex h-9 flex-1 items-center justify-center rounded-full bg-brand text-xs font-semibold text-white shadow-press disabled:bg-mist disabled:text-brand disabled:shadow-none"
     >
       {label}
     </button>
@@ -340,7 +340,7 @@ export function ChangePickup() {
             <PlaceCard place={current} active={activeId === 'current'} onSelect={select} action={actionBtn('Current', null, true)} />
           </div>
           {nearby.loading && options.length === 0
-            ? [0, 1].map((i) => <Skeleton key={i} className="h-[230px] w-[180px] shrink-0" />)
+            ? [0, 1].map((i) => <Skeleton key={i} className="h-[270px] w-[208px] shrink-0" />)
             : options.map((p) => (
                 <div key={p.id} id={`pick-${p.id}`} className="flex">
                   <PlaceCard place={p} active={p.id === activeId} onSelect={select} action={actionBtn('Change Now', () => setConfirm(p))} />

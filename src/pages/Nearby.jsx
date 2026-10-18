@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { LuChevronLeft, LuLoaderCircle, LuLocateFixed, LuMapPin, LuPhone, LuSearch, LuX } from 'react-icons/lu'
 import { TbMapPinFilled } from 'react-icons/tb'
 import { api } from '../lib/api'
@@ -12,63 +12,72 @@ import { ErrorState, Skeleton, TopBar } from '../components/ui'
 
 const RADII = [2000, 5000, 10000]
 
-/** Place card from the Figma "Nearest Hospital" sheet: photo on top, grey-green panel below. */
+/** Place card: photo with distance on top, then label, name, address and one clear action row. */
 export function PlaceCard({ place, active, onSelect, action }) {
   const partner = place.kind === 'partner'
+  const label = partner ? 'MediMeet partner' : place.kind === 'pharmacy' ? 'Pharmacy' : 'Hospital / clinic'
   return (
     <div
       onClick={() => onSelect(place)}
-      className={`flex h-full w-[180px] shrink-0 cursor-pointer snap-start flex-col overflow-hidden rounded-[20px] bg-[#8fa9a8] shadow-press transition ${
-        active ? 'ring-[3px] ring-brand' : ''
+      className={`flex h-full w-[208px] shrink-0 cursor-pointer snap-start flex-col overflow-hidden rounded-3xl bg-white shadow-card ring-2 transition ${
+        active ? 'ring-brand' : 'ring-transparent'
       }`}
     >
-      <div className="relative h-[110px] bg-mist-light">
-        {partner && (
-          <span className="absolute top-2 left-2 z-10 rounded-full bg-brand px-2.5 py-1 text-[10px] font-semibold text-white shadow-press">
-            MediMeet partner
-          </span>
-        )}
+      <div className="relative h-[104px] shrink-0 bg-brand-light">
         {place.image ? (
           <img src={place.image} alt="" className="h-full w-full object-cover" />
         ) : (
           <img
             src={`/img/icon-${place.kind === 'pharmacy' ? 'medicine' : 'hospital'}.png`}
             alt=""
-            className="mx-auto h-full w-[70%] object-contain"
+            className="mx-auto h-full w-auto max-w-[60%] object-contain p-3"
           />
         )}
+        <span className="absolute top-2 right-2 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-brand shadow-press">
+          {formatDistance(place.distance)}
+        </span>
       </div>
-      <div className="-mt-3 flex flex-1 flex-col rounded-t-[16px] bg-[#8fa9a8] px-3 pt-2.5 pb-3 text-white">
-        <div className="flex items-start justify-between gap-2">
-          <p className="line-clamp-2 min-h-[2.5rem] font-display text-[15px] leading-tight font-semibold">{place.name}</p>
-          <span className="shrink-0 text-xs">{formatDistance(place.distance)}</span>
-        </div>
-        <p className="mt-0.5 flex items-start gap-1 text-[11px] text-brand">
-          <TbMapPinFilled className="mt-0.5 shrink-0" /> <span className="line-clamp-1">{place.address}</span>
+      <div className="flex flex-1 flex-col gap-2 p-3.5">
+        <span
+          className={`self-start rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
+            partner ? 'bg-brand text-white' : 'bg-mist-light text-muted'
+          }`}
+        >
+          {label}
+        </span>
+        <p className="line-clamp-2 min-h-[2.5rem] font-display text-[15px] leading-5 font-semibold text-ink">{place.name}</p>
+        <p className="flex items-start gap-1.5 text-xs text-muted">
+          <TbMapPinFilled className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+          <span className="line-clamp-1">{place.address || 'Address not listed'}</span>
         </p>
-        {place.kind === 'hospital' && (
-          <p className="mt-1.5 text-[10px] leading-tight text-white/85">Directions only. No doctors to book here yet.</p>
-        )}
-        <div className="mt-auto flex items-end gap-2 pt-3">
+        <div className="mt-auto flex items-center gap-2 pt-2">
           {action ?? (
             <a
               href={directionsUrl(place)}
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex-1 rounded-full bg-mist py-1.5 text-center text-xs font-semibold text-brand shadow-press"
+              className="flex h-9 flex-1 items-center justify-center rounded-full bg-brand text-xs font-semibold text-white shadow-press"
             >
-              Direction
+              Directions
             </a>
           )}
           {partner && !action && (
-            <Link to={`/hospitals/${place.id}`} onClick={(e) => e.stopPropagation()} className="flex flex-col items-center text-[9px] text-white">
-              <img src="/img/icon-doctor.png" alt="" className="h-9 w-9 rounded-lg bg-white/80 object-contain p-0.5" />
-              See Doctor
+            <Link
+              to={`/hospitals/${place.id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="flex h-9 shrink-0 items-center rounded-full border-2 border-brand px-3 text-xs font-semibold text-brand"
+            >
+              Doctors
             </Link>
           )}
           {!partner && place.phone && !action && (
-            <a href={`tel:${place.phone}`} onClick={(e) => e.stopPropagation()} aria-label={`Call ${place.name}`} className="grid h-8 w-8 place-items-center rounded-full bg-mist text-brand">
+            <a
+              href={`tel:${place.phone}`}
+              onClick={(e) => e.stopPropagation()}
+              aria-label={`Call ${place.name}`}
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-brand text-brand"
+            >
               <LuPhone className="h-4 w-4" />
             </a>
           )}
@@ -80,6 +89,7 @@ export function PlaceCard({ place, active, onSelect, action }) {
 
 export default function Nearby() {
   const [params, setParams] = useSearchParams()
+  const navigate = useNavigate()
   const type = params.get('type') === 'pharmacy' ? 'pharmacy' : 'hospital'
   const [radius, setRadius] = useState(5000)
   const [activeId, setActiveId] = useState(null)
@@ -170,7 +180,7 @@ export default function Nearby() {
         />
         <div className="absolute inset-x-0 top-0 z-[400] px-4 pt-page-top">
           <div className="flex items-center gap-2">
-            <button onClick={() => window.history.back()} aria-label="Go back" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/90 text-brand shadow-soft">
+            <button onClick={() => navigate('/home')} aria-label="Go back" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/90 text-brand shadow-soft">
               <LuChevronLeft className="h-7 w-7" />
             </button>
             <form onSubmit={submitSearch} role="search" className="flex h-11 min-w-0 flex-1 items-center gap-2 rounded-full border-2 border-brand bg-white pr-1.5 pl-4 shadow-soft">
@@ -275,7 +285,7 @@ export default function Nearby() {
 
         <div className="no-scrollbar mt-4 flex snap-x scroll-px-5 items-stretch gap-3 overflow-x-auto px-5 pb-3">
           {(osm.loading || cat.loading) && shown.length === 0
-            ? [0, 1].map((i) => <Skeleton key={i} className="h-[230px] w-[180px] shrink-0" />)
+            ? [0, 1].map((i) => <Skeleton key={i} className="h-[270px] w-[208px] shrink-0" />)
             : shown.slice(0, 30).map((p) => (
                 <div key={p.id} id={`place-${p.id}`} className="flex">
                   <PlaceCard place={p} active={p.id === activeId} onSelect={select} />
