@@ -36,8 +36,9 @@ export function BottomNav() {
 }
 
 /**
- * Phone-sized app column. On tablets and desktops it becomes a device frame centred in the
- * viewport with the same margin on every side.
+ * Layout: on phones the app fills the whole screen edge to edge, so every phone size gets
+ * the same side margins from the pages themselves. From 640px it becomes a centred column,
+ * and from 768px a device frame with equal margin on every side.
  */
 export default function AppShell() {
   const { pathname } = useLocation()
@@ -49,10 +50,10 @@ export default function AppShell() {
   }, [pathname])
 
   return (
-    <div className="min-h-dvh bg-[radial-gradient(circle_at_50%_0%,#dceef0_0,#eaf0f1_50%,#e2ebed_100%)] md:flex md:h-dvh md:items-center md:justify-center md:p-8">
-      <div className="relative mx-auto flex min-h-dvh w-full max-w-[420px] flex-col overflow-x-clip bg-white md:h-full md:max-h-[860px] md:min-h-0 md:overflow-hidden md:rounded-[40px] md:shadow-[0_24px_60px_rgba(4,103,125,0.22)] md:ring-8 md:ring-ink">
-        <main id="app-scroll" className="flex flex-1 flex-col md:no-scrollbar md:overflow-y-auto">
-          <div key={pathname} className="page-in flex flex-1 flex-col">
+    <div className="min-h-dvh bg-mist-light md:flex md:h-dvh md:items-center md:justify-center md:p-8">
+      <div className="relative mx-auto flex min-h-dvh w-full flex-col overflow-x-clip bg-white sm:max-w-[480px] md:h-full md:max-h-[860px] md:min-h-0 md:max-w-[420px] md:overflow-hidden md:rounded-[40px] md:shadow-[0_24px_60px_rgba(4,103,125,0.22)] md:ring-8 md:ring-ink">
+        <main id="app-scroll" className="flex min-w-0 flex-1 flex-col md:no-scrollbar md:overflow-y-auto">
+          <div key={pathname} className="page-in flex min-w-0 flex-1 flex-col">
             <Outlet />
           </div>
           {showNav && <BottomNav />}
