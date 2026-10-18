@@ -23,7 +23,7 @@ MediMeet started as a group Figma prototype for a university course. This reposi
 
 ## Tech stack
 
-React 19 · Vite · Tailwind CSS v4 · React Router · Supabase (PostgreSQL, Auth, RLS, RPC) · Leaflet / React Leaflet · OpenStreetMap Overpass & Nominatim · qrcode.react · react-icons · Vercel
+React 19 · Vite · Tailwind CSS v4 · React Router · Supabase (PostgreSQL, Auth, RLS, RPC) · Leaflet / React Leaflet · OpenStreetMap tiles, Overpass & Nominatim · qrcode.react · react-icons · Vercel
 
 ## Architecture
 
@@ -98,6 +98,6 @@ Import the repo in Vercel, add the two `VITE_SUPABASE_*` variables, and deploy. 
 ## Credits and notes
 
 - Original prototype: MediMeet group project (Figma). Illustrations, 3D icons, specialist artwork, doctor and hospital photos come from that prototype.
-- Map data © OpenStreetMap contributors, tiles © CARTO. Please keep the attribution visible.
+- Map data and tiles © OpenStreetMap contributors. Please keep the attribution visible. The public OSM tile server is meant for light use; for real traffic switch to a tile provider with an API key.
 - The prototype used Lufga (a paid font); this build uses Outfit and Montserrat from Google Fonts.
 - Doctors without a photo in the prototype use a neutral illustrated avatar. The prototype's profile photo was replaced with initials, since it shows a real person.

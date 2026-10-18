@@ -46,15 +46,18 @@ function FlyTo({ center, zoom }) {
 }
 
 /**
- * places: [{ id, lat, lng, kind }]. CARTO light tiles keep the map calm next to the teal UI.
+ * places: [{ id, lat, lng, kind }]. Tiles come from the public OpenStreetMap server (no API key needed);
+ * the .mm-tiles filter in index.css tones them down so the map sits calmly next to the teal UI.
  */
 export default function MapView({ center, you, places = [], activeId, onSelect, zoom = 14, className = 'h-72' }) {
   return (
     <div className={`relative isolate overflow-hidden ${className}`}>
       <MapContainer center={[center.lat, center.lng]} zoom={zoom} zoomControl={false} className="h-full w-full">
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
+          className="mm-tiles"
         />
         <FlyTo center={center} />
         {you && <Marker position={[you.lat, you.lng]} icon={youIcon} />}

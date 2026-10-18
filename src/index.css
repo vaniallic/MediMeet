@@ -150,6 +150,9 @@
   font-family: var(--font-sans);
   background: #e8eef0;
 }
+.mm-tiles {
+  filter: saturate(0.7) brightness(1.04);
+}
 .mm-pin {
   background: transparent;
   border: 0;
