@@ -22,7 +22,12 @@ export function PlaceCard({ place, active, onSelect, action }) {
         active ? 'ring-[3px] ring-brand' : ''
       }`}
     >
-      <div className="h-[110px] bg-mist-light">
+      <div className="relative h-[110px] bg-mist-light">
+        {partner && (
+          <span className="absolute top-2 left-2 z-10 rounded-full bg-brand px-2.5 py-1 text-[10px] font-semibold text-white shadow-press">
+            MediMeet partner
+          </span>
+        )}
         {place.image ? (
           <img src={place.image} alt="" className="h-full w-full object-cover" />
         ) : (
@@ -41,6 +46,9 @@ export function PlaceCard({ place, active, onSelect, action }) {
         <p className="mt-0.5 flex items-start gap-1 text-[11px] text-brand">
           <TbMapPinFilled className="mt-0.5 shrink-0" /> <span className="line-clamp-1">{place.address}</span>
         </p>
+        {place.kind === 'hospital' && (
+          <p className="mt-1.5 text-[10px] leading-tight text-white/85">Directions only. No doctors to book here yet.</p>
+        )}
         <div className="mt-auto flex items-end gap-2 pt-3">
           {action ?? (
             <a
@@ -76,6 +84,7 @@ export default function Nearby() {
   const [radius, setRadius] = useState(5000)
   const [activeId, setActiveId] = useState(null)
   const [query, setQuery] = useState('')
+  const [partnersOnly, setPartnersOnly] = useState(false)
   const [areas, setAreas] = useState(null) // null = nothing searched yet
   const [searching, setSearching] = useState(false)
   const [searchError, setSearchError] = useState('')
@@ -96,10 +105,10 @@ export default function Nearby() {
 
   // Typing filters the places already loaded by name or address.
   const term = query.trim().toLowerCase()
-  const shown = useMemo(
-    () => (term ? places.filter((p) => `${p.name} ${p.address ?? ''}`.toLowerCase().includes(term)) : places),
-    [places, term],
-  )
+  const shown = useMemo(() => {
+    const base = partnersOnly && type === 'hospital' ? places.filter((p) => p.kind === 'partner') : places
+    return term ? base.filter((p) => `${p.name} ${p.address ?? ''}`.toLowerCase().includes(term)) : base
+  }, [places, term, partnersOnly, type])
 
   const active = shown.find((p) => p.id === activeId)
   useEffect(() => setActiveId(null), [type])
@@ -249,12 +258,17 @@ export default function Nearby() {
           <p className="mx-5 mt-2 text-xs text-muted">Location is off, so we’re showing Central Jakarta. Tap the target button to try again.</p>
         )}
 
-        <div className="mt-4 flex gap-2 px-5">
+        <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto px-5">
           {['hospital', 'pharmacy'].map((t) => (
             <button key={t} onClick={() => setParams({ type: t })} className={`chip ${type === t ? 'chip-active' : ''}`}>
               {t === 'hospital' ? 'Hospitals & clinics' : 'Pharmacies'}
             </button>
           ))}
+          {type === 'hospital' && (
+            <button onClick={() => setPartnersOnly((v) => !v)} aria-pressed={partnersOnly} className={`chip ${partnersOnly ? 'chip-active' : ''}`}>
+              With doctors
+            </button>
+          )}
         </div>
 
         {osm.error && <ErrorState message={`Couldn’t load OpenStreetMap results. ${osm.error}`} onRetry={osm.reload} />}
