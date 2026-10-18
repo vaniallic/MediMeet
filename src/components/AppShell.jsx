@@ -4,44 +4,40 @@ import { TbCalendarEvent, TbFilePlus, TbHomeFilled, TbUserFilled } from 'react-i
 import { isDemoMode } from '../lib/supabase'
 
 const TABS = [
-  { to: '/home', label: 'Home', short: 'Home', icon: TbHomeFilled },
-  { to: '/appointments', label: 'Upcoming appointments', short: 'Visits', icon: TbCalendarEvent },
-  { to: '/history', label: 'History', short: 'History', icon: TbFilePlus },
-  { to: '/profile', label: 'Profile', short: 'Profile', icon: TbUserFilled },
+  { to: '/home', label: 'Home', icon: TbHomeFilled },
+  { to: '/appointments', label: 'Upcoming appointments', icon: TbCalendarEvent },
+  { to: '/history', label: 'History', icon: TbFilePlus },
+  { to: '/profile', label: 'Profile', icon: TbUserFilled },
 ]
 const TAB_ROOTS = [...TABS.map((t) => t.to), '/pharmacy']
 
+/**
+ * Floating pill: it hovers above the bottom edge with space on all sides instead of being glued to it.
+ * The wrapper ignores touches so only the pill itself is tappable.
+ */
 export function BottomNav() {
   return (
-    <nav
-      aria-label="Main"
-      className="sticky bottom-0 z-[500] mt-auto shrink-0 rounded-t-[28px] bg-white px-4 pt-2.5 pb-[max(env(safe-area-inset-bottom),1rem)] shadow-[0_-6px_20px_rgba(4,103,125,0.10)]"
-    >
-      <ul className="mx-auto flex max-w-[360px] items-center justify-between">
-        {TABS.map(({ to, label, short, icon: Icon }) => (
-          <li key={to} className="flex-1">
-            <NavLink
-              to={to}
-              aria-label={label}
-              className={({ isActive }) =>
-                `mx-auto flex w-16 flex-col items-center gap-1 text-[11px] font-medium transition ${
-                  isActive ? 'text-brand' : 'text-muted hover:text-brand'
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <span className={`grid h-9 w-14 place-items-center rounded-full transition ${isActive ? 'bg-brand text-white shadow-press' : ''}`}>
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <span>{short}</span>
-                </>
-              )}
-            </NavLink>
-          </li>
+    <div className="pointer-events-none sticky bottom-0 z-[500] mt-auto shrink-0 px-5 pt-3 pb-[max(env(safe-area-inset-bottom),1.25rem)]">
+      <nav
+        aria-label="Main"
+        className="pointer-events-auto mx-auto flex h-[68px] max-w-[320px] items-center justify-between rounded-full bg-white px-3 shadow-[0_10px_28px_rgba(4,103,125,0.20)] ring-1 ring-mist"
+      >
+        {TABS.map(({ to, label, icon: Icon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            aria-label={label}
+            className={({ isActive }) =>
+              `grid h-12 w-12 place-items-center rounded-full transition ${
+                isActive ? 'bg-brand text-white shadow-press' : 'text-brand/70 hover:bg-brand-light hover:text-brand'
+              }`
+            }
+          >
+            <Icon className="h-6 w-6" />
+          </NavLink>
         ))}
-      </ul>
-    </nav>
+      </nav>
+    </div>
   )
 }
 
