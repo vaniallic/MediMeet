@@ -62,8 +62,8 @@ export default function Home() {
   )
 
   return (
-    <div className="pb-6">
-      <header className="flex items-center justify-between gap-3 px-5 pt-6 pb-4">
+    <div className="pb-page-bottom">
+      <header className="flex items-center justify-between gap-3 px-5 pt-page-top pb-4">
         <Logo />
         <div className="flex min-w-0 items-center gap-2">
           <p className="truncate font-display text-xl font-bold text-brand">Hi, {profile ? firstName(profile.full_name) : '…'}!</p>

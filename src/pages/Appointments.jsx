@@ -96,8 +96,8 @@ export function Appointments({ mode = 'upcoming' }) {
   if (history) list.reverse()
 
   return (
-    <div className="flex-1 pb-6">
-      <header className="px-5 pt-6">
+    <div className="flex-1 pb-page-bottom">
+      <header className="px-5 pt-page-top">
         <Logo />
         <h1 className="page-title mt-5">{history ? 'History' : 'Upcoming Appointment'}</h1>
       </header>
@@ -178,7 +178,7 @@ export function AppointmentDetail() {
   const h = a.doctor.hospital
 
   return (
-    <div className="pb-10">
+    <div className="pb-page-bottom">
       <TopBar title="Appointment" right={<StatusBadge status={a.status} />} />
       <div className="space-y-5 px-5">
         <Link to={`/doctors/${a.doctor.id}`} className="card flex items-center gap-4 p-4">
@@ -311,7 +311,7 @@ export function Review() {
   const labels = ['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent']
 
   return (
-    <form onSubmit={submit} className="flex flex-1 flex-col pb-8">
+    <form onSubmit={submit} className="flex flex-1 flex-col pb-page-bottom">
       <TopBar title="Leave Review" />
       <div className="flex flex-col items-center px-5 pt-4 text-center">
         <Avatar name={a.doctor.name} photo={a.doctor.photo} size="h-24 w-24 text-3xl" />

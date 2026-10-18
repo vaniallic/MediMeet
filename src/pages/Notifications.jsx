@@ -29,7 +29,7 @@ export default function Notifications() {
   }, [data.data])
 
   return (
-    <div className="pb-8">
+    <div className="pb-page-bottom">
       <TopBar title="Notifications" />
       {data.error && <ErrorState message={data.error} onRetry={data.reload} />}
       <div className="space-y-2.5 px-5">

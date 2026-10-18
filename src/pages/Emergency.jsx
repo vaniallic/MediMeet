@@ -21,7 +21,7 @@ export default function Emergency() {
   )
 
   return (
-    <div className="pb-10">
+    <div className="pb-page-bottom">
       <TopBar title="Emergency" />
       <div className="mx-5 flex items-center gap-3 overflow-hidden rounded-3xl bg-coral-light p-4 shadow-press">
         <img src={illo('ambulance')} alt="" className="w-32 shrink-0" />

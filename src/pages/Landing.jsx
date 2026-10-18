@@ -3,7 +3,7 @@ import { Logo } from '../components/ui'
 
 export default function Landing() {
   return (
-    <div className="relative flex flex-1 flex-col overflow-hidden px-6 pt-7 pb-8">
+    <div className="relative flex flex-1 flex-col overflow-hidden px-6 pt-page-top pb-page-bottom">
       <Logo />
       <div className="relative -mx-7 mt-2 flex-1">
         <img

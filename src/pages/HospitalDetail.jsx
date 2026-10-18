@@ -30,7 +30,7 @@ export default function HospitalDetail() {
   if (!hospital) return <><TopBar title="Hospital" /><ErrorState message="Hospital not found." /></>
 
   return (
-    <div className="pb-8">
+    <div className="pb-page-bottom">
       <div className="relative h-[160px] overflow-hidden bg-brand">
         {hospital.image && <img src={hospital.image} alt="" className="absolute inset-0 h-full w-full object-cover" />}
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 to-transparent" />

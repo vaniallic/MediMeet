@@ -53,7 +53,7 @@ function AuthLayout({ greeting, sub, title, children, back }) {
           <img src="/img/doctor-wave.png" alt="" className="absolute right-0 bottom-0 h-[160px] w-auto" />
         </div>
       )}
-      <div className="relative z-10 -mt-6 flex flex-1 flex-col rounded-t-[32px] bg-mist px-6 pt-7 pb-8">
+      <div className="relative z-10 -mt-6 flex flex-1 flex-col rounded-t-[32px] bg-mist px-6 pt-7 pb-page-bottom">
         {back && (
           <Link to={back} className="mb-5 inline-flex items-center gap-2 self-start text-[15px] text-brand hover:underline">
             <LuArrowLeft className="h-5 w-5" /> Back to login

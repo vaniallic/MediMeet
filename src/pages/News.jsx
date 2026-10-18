@@ -6,7 +6,7 @@ import { InfoNote, Skeleton, TopBar } from '../components/ui'
 export default function News() {
   const news = useAsync(() => getHealthNews(), [])
   return (
-    <div className="pb-8">
+    <div className="pb-page-bottom">
       <TopBar title="Health News" />
       <div className="space-y-3 px-5">
         {news.loading

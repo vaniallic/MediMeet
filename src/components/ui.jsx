@@ -21,7 +21,7 @@ export function TopBar({ title, back = true, right = null, onBack, className = '
     else navigate('/home')
   }
   return (
-    <header className={`flex items-center gap-2 px-5 pt-6 pb-3 ${className}`}>
+    <header className={`flex items-center gap-2 px-5 pt-page-top pb-4 ${className}`}>
       {back && (
         <button
           onClick={goBack}

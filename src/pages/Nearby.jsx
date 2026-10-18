@@ -168,7 +168,7 @@ export default function Nearby() {
           zoom={radius > 5000 ? 12 : 14}
           className="h-[46vh] min-h-[300px] md:h-[340px]"
         />
-        <div className="absolute inset-x-0 top-0 z-[400] px-4 pt-5">
+        <div className="absolute inset-x-0 top-0 z-[400] px-4 pt-page-top">
           <div className="flex items-center gap-2">
             <button onClick={() => window.history.back()} aria-label="Go back" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/90 text-brand shadow-soft">
               <LuChevronLeft className="h-7 w-7" />
@@ -225,7 +225,7 @@ export default function Nearby() {
         </button>
       </div>
 
-      <section className="relative z-[401] -mt-8 flex flex-1 flex-col rounded-t-[32px] bg-mist pt-5 pb-8">
+      <section className="relative z-[401] -mt-8 flex flex-1 flex-col rounded-t-[32px] bg-mist pt-5 pb-page-bottom">
         <div className="flex items-start justify-between gap-3 px-5">
           <div className="min-w-0">
             <h1 className="font-display text-lg font-bold text-brand">{type === 'pharmacy' ? 'Nearest Pharmacy' : 'Nearest Hospital'}</h1>

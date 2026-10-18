@@ -93,7 +93,7 @@ export function Checkout() {
   }
 
   return (
-    <div className="pb-8">
+    <div className="pb-page-bottom">
       <TopBar title="Payment" right={<span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">{label}</span>} />
       <div className="space-y-5 px-5 pt-2">
         <ApptPanel
@@ -201,7 +201,7 @@ export function PayScreen() {
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-mist pb-8">
+    <div className="flex flex-1 flex-col bg-mist pb-page-bottom">
       <TopBar title={isQR ? 'Scan QR Code' : 'Virtual Account'} />
       <p className="text-center text-sm text-muted">
         Complete payment within <b className="font-display text-brand">{label}</b>
@@ -248,7 +248,7 @@ export function PaymentSuccess() {
   const appt = useAsync(() => api.getAppointment(id), [id])
   const a = appt.data
   return (
-    <div className="flex flex-1 flex-col items-center px-5 pt-16 pb-8 text-center">
+    <div className="flex flex-1 flex-col items-center px-5 pt-16 pb-page-bottom text-center">
       <div className="success-pop grid h-40 w-40 place-items-center rounded-full bg-brand-light">
         <div className="grid h-28 w-28 place-items-center rounded-full bg-brand text-white shadow-press">
           <LuCheck className="h-16 w-16" strokeWidth={3} />

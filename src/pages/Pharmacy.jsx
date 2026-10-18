@@ -163,7 +163,7 @@ export function Pharmacy() {
   }
 
   return (
-    <div className="flex-1 pb-6">
+    <div className="flex-1 pb-page-bottom">
       <TopBar title="Pharmacy" />
       <label className="mx-5 mt-4 flex h-12 items-center gap-3 rounded-full border-2 border-brand bg-white px-4 shadow-soft">
         <LuSearch className="h-6 w-6 text-brand" />
@@ -304,7 +304,7 @@ export function ChangePickup() {
           onSelect={select}
           className="h-[42vh] min-h-[280px] md:h-[320px]"
         />
-        <div className="absolute inset-x-0 top-0 z-[400] flex items-center gap-2 px-4 pt-5">
+        <div className="absolute inset-x-0 top-0 z-[400] flex items-center gap-2 px-4 pt-page-top">
           <button onClick={() => navigate(-1)} aria-label="Go back" className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-brand">
             <LuChevronLeft className="h-7 w-7" />
           </button>
@@ -314,7 +314,7 @@ export function ChangePickup() {
         </div>
       </div>
 
-      <section className="relative z-[401] -mt-8 flex-1 rounded-t-[32px] bg-mist pt-5 pb-8">
+      <section className="relative z-[401] -mt-8 flex-1 rounded-t-[32px] bg-mist pt-5 pb-page-bottom">
         <div className="px-5">
           <h1 className="font-display text-xl font-bold text-brand">Nearest Pharmacy</h1>
           <p className="mt-1 flex items-center gap-1.5 truncate text-sm text-ink">

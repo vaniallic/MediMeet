@@ -113,7 +113,7 @@ export default function DoctorDetail() {
         </p>
       </section>
 
-      <section className="mt-5 flex flex-1 flex-col rounded-t-[32px] bg-white px-5 pt-6 pb-8 shadow-[0_-6px_18px_rgba(4,103,125,0.06)]">
+      <section className="mt-5 flex flex-1 flex-col rounded-t-[32px] bg-white px-5 pt-6 pb-page-bottom shadow-[0_-6px_18px_rgba(4,103,125,0.06)]">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-muted">Select Date</h2>
           <p className="font-display text-sm font-semibold text-brand">{monthLabel}</p>

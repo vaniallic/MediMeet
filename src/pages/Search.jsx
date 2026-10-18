@@ -58,7 +58,7 @@ export default function Search() {
   const total = results ? results.specialties.length + results.doctors.length + results.hospitals.length : 0
 
   return (
-    <div className="pb-8">
+    <div className="pb-page-bottom">
       <TopBar title="Search" />
       <form
         className="px-5"

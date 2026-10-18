@@ -8,7 +8,7 @@ export default function Tip() {
   const tip = tips.find((t) => t.slug === slug) ?? tips[0]
   const others = tips.filter((t) => t.slug !== tip.slug)
   return (
-    <div className="pb-10">
+    <div className="pb-page-bottom">
       <div style={{ background: tip.tint }} className="relative h-60 overflow-hidden">
         <img src={illo(tip.art)} alt="" className="absolute right-1/2 bottom-8 h-32 w-32 translate-x-1/2 object-contain" />
         <div className="relative [&_button]:bg-white/85">

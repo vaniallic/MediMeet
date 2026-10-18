@@ -11,7 +11,7 @@ export function TealHeader({ title, sub, illustration = '/img/doctor-think.png' 
   return (
     <div className="relative h-[176px] shrink-0 overflow-hidden bg-brand">
       <img src={illustration} alt="" className="pointer-events-none absolute right-0 bottom-0 h-[150px] w-auto [mask-image:linear-gradient(to_bottom,transparent,black_20%)]" />
-      <div className="relative pt-5 pr-36 text-white [&_button]:text-white [&_button:hover]:bg-white/15">
+      <div className="relative pr-36 text-white [&_button]:text-white [&_button:hover]:bg-white/15">
         <TopBar title={title} className="[&_h1]:text-xl [&_h1]:whitespace-normal [&_h1]:text-white" />
         {sub && <p className="-mt-1 pl-[68px] text-xs text-white/85">{sub}</p>}
       </div>
@@ -47,7 +47,7 @@ export function Specialists() {
   return (
     <div className="flex flex-1 flex-col">
       <TealHeader title="Choose Your Specialist" />
-      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-8">
+      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-page-bottom">
         {cat.error && <ErrorState message={cat.error} onRetry={cat.reload} />}
         <div className="grid grid-cols-4 gap-x-2 gap-y-4">
           {cat.loading
@@ -80,7 +80,7 @@ export function SpecialistDoctors() {
   return (
     <div className="flex flex-1 flex-col">
       <TealHeader title="Choose Your Doctor" sub={spec?.name} illustration="/img/doctor-point.png" />
-      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-8">
+      <div className="relative -mt-8 flex-1 rounded-t-[40px] bg-white px-5 pt-6 pb-page-bottom">
         <div className="no-scrollbar -mx-5 mb-4 flex gap-2 overflow-x-auto px-5">
           {[
             ['rating', 'Top rated'],

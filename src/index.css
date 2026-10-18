@@ -24,6 +24,18 @@
   --shadow-press: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+/* Free space at the top and bottom of every page, so no screen feels cramped. */
+:root {
+  --page-top: 2rem;
+  --page-bottom: 2.5rem;
+}
+@utility pt-page-top {
+  padding-top: var(--page-top);
+}
+@utility pb-page-bottom {
+  padding-bottom: var(--page-bottom);
+}
+
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;

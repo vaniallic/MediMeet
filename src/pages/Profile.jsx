@@ -67,8 +67,8 @@ export function Profile() {
   }
 
   return (
-    <div className="flex-1 pb-6">
-      <div className="relative h-[200px] bg-brand px-5 pt-7">
+    <div className="flex-1 pb-page-bottom">
+      <div className="relative h-[200px] bg-brand px-5 pt-page-top">
         <Logo light className="h-9 opacity-90" />
         {profile && (
           <p className="absolute bottom-6 left-[160px] right-4 truncate font-display text-base text-white">
@@ -155,7 +155,7 @@ export function EditProfile() {
   }
 
   return (
-    <form onSubmit={save} className="flex flex-1 flex-col pb-8">
+    <form onSubmit={save} className="flex flex-1 flex-col pb-page-bottom">
       <TopBar title="Edit Profile" />
       <div className="flex justify-center py-3">
         <Avatar name={form.full_name || 'M M'} size="h-24 w-24 text-3xl" />
@@ -312,7 +312,7 @@ export function Settings() {
   }
 
   return (
-    <div className="pb-10">
+    <div className="pb-page-bottom">
       <TopBar title={titles[section] ?? 'Settings'} />
       <div className="px-5">
         {section === 'language' && (
@@ -388,7 +388,7 @@ export function Settings() {
 
 export function PrivacyPage() {
   return (
-    <div className="pb-10">
+    <div className="pb-page-bottom">
       <TopBar title="Privacy Policy" />
       <div className="px-5"><PrivacyText /></div>
     </div>
