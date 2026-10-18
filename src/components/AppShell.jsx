@@ -4,10 +4,10 @@ import { TbCalendarEvent, TbFilePlus, TbHomeFilled, TbUserFilled } from 'react-i
 import { isDemoMode } from '../lib/supabase'
 
 const TABS = [
-  { to: '/home', label: 'Home', icon: TbHomeFilled },
-  { to: '/appointments', label: 'Upcoming appointments', icon: TbCalendarEvent },
-  { to: '/history', label: 'History', icon: TbFilePlus },
-  { to: '/profile', label: 'Profile', icon: TbUserFilled },
+  { to: '/home', label: 'Home', short: 'Home', icon: TbHomeFilled },
+  { to: '/appointments', label: 'Upcoming appointments', short: 'Visits', icon: TbCalendarEvent },
+  { to: '/history', label: 'History', short: 'History', icon: TbFilePlus },
+  { to: '/profile', label: 'Profile', short: 'Profile', icon: TbUserFilled },
 ]
 const TAB_ROOTS = [...TABS.map((t) => t.to), '/pharmacy']
 
@@ -15,22 +15,32 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Main"
-      className="sticky bottom-0 z-[500] mt-auto flex h-16 shrink-0 items-center justify-around border-t border-mist/70 bg-white/95 px-5 pb-[env(safe-area-inset-bottom)] backdrop-blur"
+      className="sticky bottom-0 z-[500] mt-auto shrink-0 rounded-t-[28px] bg-white px-4 pt-2.5 pb-[max(env(safe-area-inset-bottom),1rem)] shadow-[0_-6px_20px_rgba(4,103,125,0.10)]"
     >
-      {TABS.map(({ to, label, icon: Icon }) => (
-        <NavLink
-          key={to}
-          to={to}
-          aria-label={label}
-          className={({ isActive }) =>
-            `grid h-11 w-11 place-items-center rounded-full transition ${
-              isActive ? 'bg-brand text-white shadow-press' : 'text-brand hover:bg-brand-light'
-            }`
-          }
-        >
-          <Icon className="h-6 w-6" />
-        </NavLink>
-      ))}
+      <ul className="mx-auto flex max-w-[360px] items-center justify-between">
+        {TABS.map(({ to, label, short, icon: Icon }) => (
+          <li key={to} className="flex-1">
+            <NavLink
+              to={to}
+              aria-label={label}
+              className={({ isActive }) =>
+                `mx-auto flex w-16 flex-col items-center gap-1 text-[11px] font-medium transition ${
+                  isActive ? 'text-brand' : 'text-muted hover:text-brand'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <span className={`grid h-9 w-14 place-items-center rounded-full transition ${isActive ? 'bg-brand text-white shadow-press' : ''}`}>
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  <span>{short}</span>
+                </>
+              )}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
     </nav>
   )
 }
