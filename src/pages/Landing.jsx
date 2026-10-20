@@ -9,7 +9,7 @@ export default function Landing() {
         <img
           src="/img/hero-landing.png"
           alt="A doctor checking a patient's blood pressure"
-          className="float mx-auto w-full max-w-[360px] object-contain"
+          className="float mx-auto max-h-[40dvh] w-full max-w-[360px] object-contain"
         />
       </div>
       <h1 className="mt-2 font-display text-[32px] leading-[1.05] font-extrabold text-brand [text-shadow:0_4px_4px_rgba(0,0,0,0.18)]">
