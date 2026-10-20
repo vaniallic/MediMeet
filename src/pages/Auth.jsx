@@ -155,14 +155,16 @@ export function Login() {
         </button>
       </form>
 
-      <button
-        type="button"
-        onClick={() => signIn(null, DEMO_ACCOUNT)}
-        disabled={busy}
-        className="btn-secondary mt-3 border-transparent bg-white/70 text-sm"
-      >
-        Try the demo account
-      </button>
+      {isDemoMode && (
+        <button
+          type="button"
+          onClick={() => signIn(null, DEMO_ACCOUNT)}
+          disabled={busy}
+          className="btn-secondary mt-3 border-transparent bg-white/70 text-sm"
+        >
+          Try the demo account
+        </button>
+      )}
 
       <Divider label="Or login with" />
       <SocialButtons />
