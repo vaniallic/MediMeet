@@ -42,11 +42,11 @@ function AuthLayout({ greeting, sub, title, children, back }) {
   return (
     <div className="flex flex-1 flex-col bg-brand">
       {back ? (
-        <div className="h-[130px] shrink-0 px-6 pt-7">
+        <div className="min-h-[130px] shrink-0 px-6 pt-page-top">
           <Logo light className="h-9 opacity-90" />
         </div>
       ) : (
-        <div className="relative h-[240px] shrink-0 overflow-hidden px-6 pt-7">
+        <div className="relative min-h-[240px] shrink-0 overflow-hidden px-6 pt-page-top">
           <Logo light className="h-9 opacity-90" />
           <p className="mt-10 font-display text-[34px] leading-none font-bold text-white [text-shadow:0_4px_4px_rgba(0,0,0,0.2)]">{greeting}</p>
           <p className="mt-2 text-base text-white">{sub}</p>

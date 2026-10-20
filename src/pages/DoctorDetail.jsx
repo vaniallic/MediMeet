@@ -69,7 +69,7 @@ export default function DoctorDetail() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative h-[300px] overflow-hidden bg-gradient-to-b from-brand via-[#5a9fb0] to-[#d9f1f5]">
+      <div className="relative min-h-[300px] overflow-hidden bg-gradient-to-b from-brand via-[#5a9fb0] to-[#d9f1f5]">
         {doctor.portrait ? (
           <img src={doctor.portrait} alt="" className="absolute right-6 bottom-0 h-[236px] w-auto" />
         ) : (

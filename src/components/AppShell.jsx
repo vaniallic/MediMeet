@@ -55,10 +55,16 @@ export default function AppShell() {
     document.getElementById('app-scroll')?.scrollTo?.(0, 0)
   }, [pathname])
 
+  // The phone's status bar (installed app) takes this colour, so it blends with the top of each page.
+  useEffect(() => {
+    const teal = /^\/(login|signup|forgot-password|reset-password|doctors\/)/.test(pathname)
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', teal ? '#04677d' : '#ffffff')
+  }, [pathname])
+
   return (
-    <div className="min-h-dvh bg-mist-light md:flex md:h-dvh md:items-center md:justify-center md:p-5">
-      <div className="relative mx-auto flex min-h-dvh w-full flex-col overflow-x-clip bg-white sm:max-w-[480px] md:h-full md:max-h-[880px] md:min-h-0 md:max-w-[420px] md:overflow-hidden md:rounded-[40px] md:shadow-[0_24px_60px_rgba(4,103,125,0.22)] md:ring-8 md:ring-ink">
-        <main id="app-scroll" className="flex min-w-0 flex-1 flex-col md:no-scrollbar md:overflow-y-auto">
+    <div className="h-dvh overflow-hidden bg-mist-light md:flex md:items-center md:justify-center md:p-5">
+      <div className="relative mx-auto flex h-full w-full flex-col overflow-hidden bg-white sm:max-w-[480px] md:max-h-[880px] md:max-w-[420px] md:rounded-[40px] md:shadow-[0_24px_60px_rgba(4,103,125,0.22)] md:ring-8 md:ring-ink">
+        <main id="app-scroll" className="no-scrollbar flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden overflow-y-auto overscroll-y-none">
           <div key={pathname} className="page-in flex min-w-0 flex-1 flex-col">
             <Outlet />
           </div>

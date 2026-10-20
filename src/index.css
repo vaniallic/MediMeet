@@ -37,8 +37,15 @@
 }
 
 @layer base {
+  html,
+  body {
+    height: 100%;
+    overscroll-behavior: none; /* no bounce / pull-to-refresh: the app stays put */
+  }
   html {
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* no double-tap zoom */
+    -webkit-text-size-adjust: 100%;
   }
   body {
     @apply bg-mist-light font-sans text-ink antialiased;
@@ -171,4 +178,13 @@
 }
 .leaflet-popup-content-wrapper {
   border-radius: 14px;
+}
+
+/* iOS zooms the page when a focused field has text smaller than 16px. Keep fields at 16px on touch screens. */
+@media (hover: none) and (pointer: coarse) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }
