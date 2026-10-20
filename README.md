@@ -2,13 +2,31 @@
 
 **Your health, one tap away.** A mobile-first web app for finding a doctor, booking a consultation, paying, and picking up your prescription.
 
-MediMeet started as a group Figma prototype for a university course. This repository turns that prototype into a working product: real accounts, a real database with server-side rules, live map data, and every screen of the original flow.
+**Live demo:** [medimeet-mauve.vercel.app](https://medimeet-mauve.vercel.app) (best viewed on a phone, or in a phone-sized window; you can also install it to your home screen)
+
+MediMeet began as a university course project. My group came up with the idea, and I designed the Figma prototype. Nobody had built the app, so I built it myself: real accounts, a real database with server-side rules, live map data, and every screen of the original flow.
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/landing.jpg" width="180" alt="Landing"></td>
+    <td><img src="docs/screenshots/home.jpg" width="180" alt="Home"></td>
+    <td><img src="docs/screenshots/specialists.jpg" width="180" alt="Choose a specialist"></td>
+    <td><img src="docs/screenshots/doctor.jpg" width="180" alt="Doctor detail and schedule"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/payment.jpg" width="180" alt="Checkout"></td>
+    <td><img src="docs/screenshots/success.jpg" width="180" alt="Payment success with queue number"></td>
+    <td><img src="docs/screenshots/pharmacy.jpg" width="180" alt="Pharmacy and prescription"></td>
+    <td><img src="docs/screenshots/nearby.jpg" width="180" alt="Nearby hospitals on a map"></td>
+  </tr>
+</table>
 
 > Portfolio project. The partner hospitals (Ciputra, Siloam, Tzu Chi) and their photos come from the original prototype; the doctors, schedules and fees are simulated and not affiliated with those hospitals. Payments are simulated. Do not use it for real medical appointments.
 
 ## Features
 
-- **Accounts** — email/password sign-up, Google / Facebook / Apple sign-in, password reset (Supabase Auth)
+- **Accounts** — email/password sign-up, log in and password reset (Supabase Auth). Google / Facebook / Apple buttons are in the UI but need provider setup (see below), so they are not active on the live demo
+- **Browse as a guest** — doctors, hospitals and the map are open to everyone; login only appears when you book or open personal pages, then you return to the same doctor and time
 - **Find care** — search across doctors, specialists and partner hospitals; 20 specialties; sort doctors by rating, fee or experience
 - **Real places nearby** — hospitals, clinics and pharmacies around the user from the OpenStreetMap Overpass API, on an interactive Leaflet map, with a readable location label from Nominatim
 - **Booking** — 3-week date strip and time grid that hides past times and slots other users have already taken
@@ -19,6 +37,7 @@ MediMeet started as a group Figma prototype for a university course. This reposi
 - **Profile** — edit profile, notification setting, payment history, change password, download my data (JSON), FAQ, emergency numbers
 - **Health news** — auto-sliding cards with the latest headlines from Kemenkes RI (Sehat Negeriku) and WHO, fetched by a Supabase Edge Function
 - **Notifications** — reminders for upcoming visits, unpaid bookings, prescriptions ready and reviews to leave
+- **Installable (PWA)** — manifest, icons and service worker, so it can be added to a phone's home screen
 - **Demo mode** — with no Supabase keys the whole app runs on localStorage, so it can be tried instantly
 
 ## Tech stack
@@ -64,7 +83,7 @@ npm install
 npm run dev
 ```
 
-Without a `.env.local` the app starts in **demo mode**. Log in with **Try the demo account** (`demo@medimeet.app` / `medimeet123`) or sign up with any email.
+Without a `.env.local` the app starts in **demo mode**. The login page then shows **Try the demo account** (`demo@medimeet.app` / `medimeet123`), or sign up with any email. With Supabase keys set, that button is hidden and you sign up with a real email.
 
 ## Connect Supabase
 
@@ -76,8 +95,8 @@ Without a `.env.local` the app starts in **demo mode**. Log in with **Try the de
    VITE_SUPABASE_ANON_KEY=eyJ...
    ```
 4. **Authentication → URL Configuration** → set Site URL to your deployed URL and add `http://localhost:5173/**` and `https://<your-site>/**` to Redirect URLs.
-5. For a smoother demo, turn off **Confirm email** under Authentication → Providers → Email, then create the demo user in **Authentication → Users → Add user** (`demo@medimeet.app` / `medimeet123`, “Auto confirm”).
-6. Optional — social sign-in: enable Google, Facebook and/or Apple under Authentication → Providers, create the OAuth app with each provider using the callback URL Supabase shows there, and paste the client ID and secret. Buttons for providers you don't enable will show an error.
+5. For a smoother demo, turn off **Confirm email** under Authentication → Sign In / Providers → Email, then create the demo user in **Authentication → Users → Add user** (`demo@medimeet.app` / `medimeet123`, “Auto confirm”).
+6. Optional (not enabled on the live demo) — social sign-in: enable Google, Facebook and/or Apple under Authentication → Providers, create the OAuth app with each provider using the callback URL Supabase shows there, and paste the client ID and secret. Buttons for providers you don't enable will show an error.
 
 If you change `src/data/catalog.js`, run `npm run seed:sql` and re-run `supabase/seed.sql`.
 
@@ -97,7 +116,7 @@ Import the repo in Vercel, add the two `VITE_SUPABASE_*` variables, and deploy. 
 
 ## Credits and notes
 
-- Original prototype: MediMeet group project (Figma). Illustrations, 3D icons, specialist artwork, doctor and hospital photos come from that prototype.
+- Idea: course group project. Figma prototype and this build: me. Illustrations, 3D icons, specialist artwork, doctor and hospital photos come from that prototype.
 - Map data and tiles © OpenStreetMap contributors. Please keep the attribution visible. The public OSM tile server is meant for light use; for real traffic switch to a tile provider with an API key.
 - The prototype used Lufga (a paid font); this build uses Outfit and Montserrat from Google Fonts.
 - Doctors without a photo in the prototype use a neutral illustrated avatar. The prototype's profile photo was replaced with initials, since it shows a real person.
